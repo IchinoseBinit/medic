@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GeneralTextField extends StatefulWidget {
   const GeneralTextField({
@@ -45,6 +46,7 @@ class _GeneralTextFieldState extends State<GeneralTextField> {
       obscureText: toHide,
       textInputAction: widget.textInputAction,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 14.h),
         suffixIcon: widget.isObscure
             ? IconButton(
                 icon: Icon(

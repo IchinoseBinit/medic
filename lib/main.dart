@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medic/providers/login_provider.dart';
+import 'package:medic/providers/register_provider.dart';
+import 'package:provider/provider.dart';
 import '/screens/login_screen.dart';
 import '/theme/theme_data.dart';
 
@@ -17,10 +20,20 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: () => MaterialApp(
-        title: 'E-Medic',
-        theme: lightTheme(context),
-        home: LoginScreen(),
+      builder: () => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => RegisterProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => LoginProvider(),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'E-Medic',
+          theme: lightTheme(context),
+          home: LoginScreen(),
+        ),
       ),
     );
   }

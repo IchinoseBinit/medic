@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:medic/providers/register_provider.dart';
+import 'package:provider/provider.dart';
 import '/constants/constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '/utils/validation_mixin.dart';
@@ -9,6 +11,7 @@ class RegisterScreen extends StatelessWidget {
   RegisterScreen({Key? key}) : super(key: key);
 
   final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -41,6 +44,18 @@ class RegisterScreen extends StatelessWidget {
                 textInputType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 validate: (value) => ValidationMixin().validateEmail(value!),
+                onFieldSubmitted: (_) {},
+              ),
+              SizedBox(
+                height: 16.h,
+              ),
+              GeneralTextField(
+                title: "Username",
+                controller: usernameController,
+                textInputType: TextInputType.name,
+                textInputAction: TextInputAction.next,
+                validate: (value) =>
+                    ValidationMixin().validate(value!, "Username"),
                 onFieldSubmitted: (_) {},
               ),
               SizedBox(
@@ -85,13 +100,23 @@ class RegisterScreen extends StatelessWidget {
   }
 
   submit(context) async {
+    final dialog = GeneralAlertDialog();
     try {
       if (formKey.currentState!.validate()) {
-        GeneralAlertDialog().customLoadingDialog(context);
-        await Future.delayed(const Duration(seconds: 3));
+        dialog.customLoadingDialog(context);
+        await Provider.of<RegisterProvider>(context, listen: false)
+            .registerUser(
+          context,
+          email: emailController.text,
+          username: usernameController.text,
+          password: passwordController.text,
+        );
         Navigator.pop(context);
         Navigator.pop(context);
       }
-    } catch (ex) {}
+    } catch (ex) {
+      Navigator.pop(context);
+      dialog.customAlertDialog(context, ex.toString());
+    }
   }
 }

@@ -11,15 +11,16 @@ class CurvedBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 100.h,
-        width: 100.w,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(25),
-          ),
-          color: Colors.white,
+      height: 700.h,
+      width: 390.w,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(25.r),
         ),
-        padding: basePadding,
-        child: widget);
+        color: Colors.white,
+      ),
+      padding: basePadding,
+      child: widget,
+    );
   }
 }

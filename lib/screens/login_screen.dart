@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medic/providers/login_provider.dart';
+import 'package:provider/provider.dart';
 
 import '/constants/constants.dart';
 import '/screens/home_screen.dart';
@@ -13,7 +15,7 @@ class LoginScreen extends StatelessWidget {
 
   // final bool canCheckBioMetric;
 
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
@@ -41,11 +43,12 @@ class LoginScreen extends StatelessWidget {
                   height: 8.h,
                 ),
                 GeneralTextField(
-                  title: "Email",
-                  controller: emailController,
+                  title: "Username",
+                  controller: usernameController,
                   textInputType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
-                  validate: (value) => ValidationMixin().validateEmail(value!),
+                  validate: (value) =>
+                      ValidationMixin().validate(value!, "Username"),
                   onFieldSubmitted: (_) {},
                 ),
                 SizedBox(
@@ -93,41 +96,24 @@ class LoginScreen extends StatelessWidget {
   }
 
   void _submit(BuildContext context, bool isAuthenticated) async {
+    final dialog = GeneralAlertDialog();
+
     try {
       if (!formKey.currentState!.validate()) {
         return;
       }
-      GeneralAlertDialog().customLoadingDialog(context);
-      await Future.delayed(const Duration(seconds: 3));
-      Navigator.pop(context);
+      dialog.customLoadingDialog(context);
+      await Provider.of<LoginProvider>(context, listen: false).loginUser(
+          username: usernameController.text, password: passwordController.text);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (_) => const HomeScreen(),
         ),
       );
-
-      // Provider.of<UserProvider>(context, listen: false).setUser(map);
-      // }
-      // Navigator.pop(context);
-      // if (isAuthenticated) {
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (_) => const HomeScreen(),
-      //     ),
-      //   );
-      // } else {
-      //   Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (_) => FingerPrintAuthScreen(
-      //         username: emailController.text,
-      //         password: passwordController.text,
-      //       ),
-      //     ),
-      //   );
-      // }
-    } catch (e) {}
+    } catch (ex) {
+      Navigator.pop(context);
+      dialog.customAlertDialog(context, ex.toString());
+    }
   }
 }

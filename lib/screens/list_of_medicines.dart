@@ -26,11 +26,14 @@ class ListOfMedicines extends StatelessWidget {
       body: CurvedBodyWidget(
         widget: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Image.asset(
-                ImageConstant.medicines,
-                width: 170.h,
-                height: 300.h,
+              Center(
+                child: Image.asset(
+                  ImageConstant.medicines,
+                  fit: BoxFit.contain,
+                ),
               ),
               SizedBox(
                 height: 8.h,

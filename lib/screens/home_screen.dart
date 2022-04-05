@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/screens/list_of_medicines.dart';
+import 'package:medic/screens/surgical_items.dart';
 import '/utils/navigate.dart';
 import '/widgets/curved_body_widget.dart';
 import '/widgets/general_alert_dialog.dart';
@@ -52,9 +53,9 @@ class HomeScreen extends StatelessWidget {
           //   // data.
           //   return
           UserAccountsDrawerHeader(
-            accountName: Text(data.user.name ?? "No Name"),
+            accountName: Text(data?.user?.name ?? "No Name"),
             accountEmail: Text(
-              data.user.email ?? "No Email",
+              data?.user?.email ?? "No Email",
             ),
             currentAccountPicture: Hero(
               tag: "image-url",
@@ -63,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                 width: 128.h,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(64.r),
-                  child: data.user.image == null
+                  child: data?.user?.image == null
                       ? Image.network(
                           "image",
                           fit: BoxFit.cover,
@@ -90,7 +91,7 @@ class HomeScreen extends StatelessWidget {
           buildListTile(
             context,
             label: "Surgical Items",
-            widget: ListOfMedicines(
+            widget: SurgicalItems(
               title: "Surgical Items",
             ),
           ),
