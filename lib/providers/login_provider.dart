@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medic/api/api_call.dart';
+import 'package:medic/api/api_client.dart';
+import 'package:medic/constants/urls.dart';
 
 class LoginProvider extends ChangeNotifier {
   loginUser({
@@ -9,7 +11,8 @@ class LoginProvider extends ChangeNotifier {
     try {
       final map = {"username": username, "password": password};
 
-      await APICall().postRequestWithoutToken(map);
+      APIClient.token = await APICall().postRequestWithoutToken(loginUrl, map);
+      notifyListeners();
     } catch (ex) {
       rethrow;
     }

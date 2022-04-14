@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medic/api/api_call.dart';
+import 'package:medic/constants/urls.dart';
 
 class RegisterProvider extends ChangeNotifier {
   registerUser(
@@ -11,7 +12,7 @@ class RegisterProvider extends ChangeNotifier {
     try {
       final map = {"email": email, "username": username, "password": password};
 
-      await APICall().postRequestWithoutToken(map);
+      await APICall().postRequestWithoutToken(registerUrl, map);
     } catch (ex) {
       rethrow;
     }

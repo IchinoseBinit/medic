@@ -90,9 +90,9 @@ class HomeScreen extends StatelessWidget {
           ),
           buildListTile(
             context,
-            label: "Surgical Items",
+            label: "Items",
             widget: SurgicalItems(
-              title: "Surgical Items",
+              title: "Items",
             ),
           ),
           SizedBox(

@@ -8,9 +8,8 @@ import '/utils/request_type.dart';
 // import '/utils/request_type_exception.dart';
 import '/utils/string_to_url.dart';
 
-String token = '';
-
 class APIClient {
+  static String token = '';
   final Client _client;
 
   APIClient(this._client);
@@ -29,7 +28,7 @@ class APIClient {
 
     Map<String, String> headingWithToken = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer gAccessToken',
+      'Authorization': 'Bearer $token',
     };
 
     // if (EnvironmentConfig.isProd != "true" && UtilityProvider.url.isNotEmpty) {

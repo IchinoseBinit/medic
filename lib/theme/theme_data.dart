@@ -15,26 +15,30 @@ ThemeData lightTheme(BuildContext context) {
       ),
       elevation: 0,
     ),
-    textTheme: GoogleFonts.ubuntuCondensedTextTheme(
-      const TextTheme(
-        headline5: TextStyle(
+    textTheme: GoogleFonts.poppinsTextTheme(
+      TextTheme(
+        headline5: const TextStyle(
           color: Colors.black,
           fontFamily: "Open Sans",
           fontWeight: FontWeight.w600,
         ),
-        headline2: TextStyle(color: Colors.black),
-        bodyText1: TextStyle(color: Colors.black, fontFamily: "Open Sans"),
-        bodyText2: TextStyle(color: Colors.black),
-        subtitle1: TextStyle(
+        headline2: const TextStyle(color: Colors.black),
+        bodyText1: TextStyle(
           color: Colors.black,
-          fontFamily: "Open Sans",
+          fontSize: 16.sp,
         ),
-        subtitle2: TextStyle(
+        bodyText2: TextStyle(
+          color: Colors.black,
+          fontSize: 14.sp,
+        ),
+        subtitle1: const TextStyle(
           color: Colors.black,
         ),
-        caption: TextStyle(
+        subtitle2: const TextStyle(
           color: Colors.black,
-          fontFamily: "Open Sans",
+        ),
+        caption: const TextStyle(
+          color: Colors.black,
         ),
       ),
     ),

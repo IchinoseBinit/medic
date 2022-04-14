@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medic/providers/education_provider.dart';
 import 'package:medic/providers/login_provider.dart';
+import 'package:medic/providers/products_provider.dart';
 import 'package:medic/providers/register_provider.dart';
 import 'package:provider/provider.dart';
 import '/screens/login_screen.dart';
@@ -27,6 +29,12 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (_) => LoginProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => EducationProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => ProductsProvider(),
           ),
         ],
         child: MaterialApp(
