@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medic/providers/products_provider.dart';
-import 'package:medic/screens/product_screen.dart';
-import 'package:medic/utils/navigate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medic/widgets/product_card.dart';
 import 'package:provider/provider.dart';
 
 import '/widgets/curved_body_widget.dart';
@@ -41,15 +41,14 @@ class SurgicalItems extends StatelessWidget {
                 final list =
                     Provider.of<ProductsProvider>(context, listen: false)
                         .listOfProducts;
-                return ListView.builder(
-                  itemBuilder: ((context, index) => ListTile(
-                        title: Text(list[index].title),
-                        onTap: () => navigate(
-                          context,
-                          ProductScreen(
-                            id: list[index].id,
-                          ),
-                        ),
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 120.h,
+                    childAspectRatio: .5,
+                  ),
+                  itemBuilder: ((context, index) => ProductCard(
+                        product: list[index],
                       )),
                   itemCount: list.length,
                   shrinkWrap: true,

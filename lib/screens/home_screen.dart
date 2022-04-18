@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medic/providers/products_provider.dart';
 import 'package:medic/screens/list_of_medicines.dart';
 import 'package:medic/screens/surgical_items.dart';
+import 'package:medic/widgets/product_card.dart';
+import 'package:provider/provider.dart';
 import '/utils/navigate.dart';
 import '/widgets/curved_body_widget.dart';
 import '/widgets/general_alert_dialog.dart';
@@ -15,6 +18,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = null;
+    final future = Provider.of<ProductsProvider>(context, listen: false)
+        .fetchLatestProducts();
     // final future =
     //     Provider.of<RoomProvider>(context, listen: false).fetchRoom(context);
     return Scaffold(
@@ -102,8 +107,28 @@ class HomeScreen extends StatelessWidget {
       )),
       body: CurvedBodyWidget(
           widget: SingleChildScrollView(
-        child: Column(
-          children: [],
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+              future: future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final list =
+                    Provider.of<ProductsProvider>(context, listen: false)
+                        .listOfProducts;
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: ((context, index) => ProductCard(
+                        product: list[index],
+                      )),
+                  itemCount: list.length,
+                  shrinkWrap: true,
+                  primary: false,
+                );
+              }),
         ),
       )
           // FutureBuilder(

@@ -6,7 +6,7 @@ import 'package:medic/api/api_call.dart';
 import 'package:medic/constants/urls.dart';
 import 'package:medic/models/products.dart';
 
-class ProductsProvider extends ChangeNotifier {
+class OrderProvider extends ChangeNotifier {
   List<Products> listOfProducts = [];
 
   fetchProducts() async {

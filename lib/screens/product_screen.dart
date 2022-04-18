@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:medic/models/products.dart';
 import 'package:medic/providers/products_provider.dart';
 import 'package:medic/utils/show_snack_bar.dart';
 import 'package:medic/widgets/curved_body_widget.dart';

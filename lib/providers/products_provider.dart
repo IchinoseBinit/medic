@@ -8,6 +8,7 @@ import 'package:medic/models/products.dart';
 
 class ProductsProvider extends ChangeNotifier {
   List<Products> listOfProducts = [];
+  List<Products> listOfLatestProducts = [];
 
   fetchProducts() async {
     try {
@@ -16,6 +17,21 @@ class ProductsProvider extends ChangeNotifier {
       final map = jsonDecode(response);
       for (var e in map) {
         listOfProducts.add(Products.fromJson(e));
+      }
+    } catch (ex) {
+      log(ex.toString());
+      rethrow;
+    }
+  }
+
+  fetchLatestProducts() async {
+    try {
+      if (listOfProducts.isNotEmpty) return;
+      final response = await APICall().getRequestWithToken(latestProductsUrl);
+      final map = jsonDecode(response);
+
+      for (var e in map) {
+        listOfLatestProducts.add(Products.fromJson(e));
       }
     } catch (ex) {
       log(ex.toString());

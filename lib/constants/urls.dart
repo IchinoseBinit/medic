@@ -14,5 +14,6 @@ const companyUrl = "$_baseUrl/company";
 const educationUrl = "$_baseUrl/education";
 
 const productsUrl = "$_baseUrl/product";
+const latestProductsUrl = "$productsUrl/products";
 const singleProductUrl = "$_baseUrl/product?id=";
 // medical-staff  
