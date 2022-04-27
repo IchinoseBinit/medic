@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:medic/api/api_client.dart';
-import 'package:medic/constants/urls.dart';
 import 'package:medic/utils/request_type.dart';
 
 class APICall {
@@ -16,7 +15,6 @@ class APICall {
         url,
         body: body,
       );
-      log(_response.body);
       if (_response.statusCode == 200) {
         return _response.body;
       }
@@ -46,7 +44,6 @@ class APICall {
   getRequestWithToken(String url) async {
     try {
       Response _response = await _callApi(RequestType.getWithToken, url);
-      log(_response.body);
       if (_response.statusCode == 200) {
         return _response.body;
       }

@@ -7,32 +7,27 @@ import 'package:medic/constants/urls.dart';
 import 'package:medic/models/products.dart';
 
 class ProductsProvider extends ChangeNotifier {
-  List<Products> listOfProducts = [];
-  List<Products> listOfLatestProducts = [];
+  List<Product> listOfProducts = [];
+  List<Product> listOfLatestProducts = [];
 
   fetchProducts() async {
-    try {
-      if (listOfProducts.isNotEmpty) return;
-      final response = await APICall().getRequestWithToken(productsUrl);
-      final map = jsonDecode(response);
-      for (var e in map) {
-        listOfProducts.add(Products.fromJson(e));
-      }
-    } catch (ex) {
-      log(ex.toString());
-      rethrow;
-    }
+    // try {
+    if (listOfProducts.isNotEmpty) return;
+    final response = await APICall().getRequestWithToken(productsUrl);
+    listOfProducts = productFromJson(response);
+    print(listOfProducts.first.title);
+    notifyListeners();
+    // } catch (ex) {
+    //   log(ex.toString());
+    //   rethrow;
+    // }
   }
 
   fetchLatestProducts() async {
     try {
-      if (listOfProducts.isNotEmpty) return;
+      if (listOfLatestProducts.isNotEmpty) return;
       final response = await APICall().getRequestWithToken(latestProductsUrl);
-      final map = jsonDecode(response);
-
-      for (var e in map) {
-        listOfLatestProducts.add(Products.fromJson(e));
-      }
+      listOfLatestProducts = productFromJson(response);
     } catch (ex) {
       log(ex.toString());
       rethrow;
@@ -44,7 +39,8 @@ class ProductsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Products getProductById(int id) {
-    return listOfProducts.firstWhere((element) => element.id == id);
+  Product getProductById(int id) {
+    final list = [...listOfLatestProducts, ...listOfProducts];
+    return list.firstWhere((element) => element.id == id);
   }
 }

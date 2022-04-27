@@ -41,19 +41,23 @@ class SurgicalItems extends StatelessWidget {
                 final list =
                     Provider.of<ProductsProvider>(context, listen: false)
                         .listOfProducts;
-                return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 120.h,
-                    childAspectRatio: .5,
-                  ),
-                  itemBuilder: ((context, index) => ProductCard(
-                        product: list[index],
-                      )),
-                  itemCount: list.length,
-                  shrinkWrap: true,
-                  primary: false,
-                );
+                return list.isEmpty
+                    ? const Center(
+                        child: Text("No Items"),
+                      )
+                    : GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 120.h,
+                          childAspectRatio: .5,
+                        ),
+                        itemBuilder: ((context, index) => ProductCard(
+                              product: list[index],
+                            )),
+                        itemCount: list.length,
+                        shrinkWrap: true,
+                        primary: false,
+                      );
               }),
         ),
       ),

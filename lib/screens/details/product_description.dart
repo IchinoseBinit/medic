@@ -9,7 +9,7 @@ class ProductDescription extends StatelessWidget {
     required this.product,
   }) : super(key: key);
 
-  final Products product;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {

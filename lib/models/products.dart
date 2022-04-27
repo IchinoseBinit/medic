@@ -1,74 +1,85 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'dart:typed_data';
 
-class Products {
+List<Product> productFromJson(String str) =>
+    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
+
+String productToJson(List<Product> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Product {
+  Product({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.price,
+    required this.image,
+    required this.quantity,
+    this.selectedQuantity = 1,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.categoryId,
+  });
+
   late final int id;
   late final String title;
   late final String description;
   late final int price;
-  late final Photo image;
-  late int quantity;
   late int selectedQuantity;
-  late final String createdAt;
-  late final String updatedAt;
+  late final Photo image;
+  late final int quantity;
+  late final DateTime createdAt;
+  late final DateTime updatedAt;
   late final int categoryId;
 
-  Products(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.price,
-      required this.image,
-      required this.quantity,
-      required this.selectedQuantity,
-      required this.createdAt,
-      required this.updatedAt,
-      required this.categoryId});
+  Product.fromJson(Map<String, dynamic> json) {
+    log("message");
+    id = json["id"];
+    title = json["title"];
+    description = json["description"];
+    price = json["price"];
 
-  Products.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    price = json['price'];
-    image = Photo.fromJson(json['image']);
-    quantity = json['quantity'];
-    selectedQuantity = 0;
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    categoryId = json['CategoryId'];
+    image = Photo.fromJson(json["image"]);
+    quantity = json["quantity"];
+    selectedQuantity = 1;
+    createdAt = DateTime.parse(json["createdAt"]);
+    updatedAt = DateTime.parse(json["updatedAt"]);
+    categoryId = json["CategoryId"];
   }
 
-  // Map<String, dynamic> toJson() {
-  //   final Map<String, dynamic> data = new Map<String, dynamic>();
-  //   data['id'] = this.id;
-  //   data['title'] = this.title;
-  //   data['description'] = this.description;
-  //   data['price'] = this.price;
-  //   if (this.image != null) {
-  //     data['image'] = this.image!.toJson();
-  //   }
-  //   data['quantity'] = this.quantity;
-  //   data['createdAt'] = this.createdAt;
-  //   data['updatedAt'] = this.updatedAt;
-  //   data['CategoryId'] = this.categoryId;
-  //   return data;
-  // }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "description": description,
+        "price": price,
+        "image": image.toJson(),
+        "quantity": quantity,
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
+        "CategoryId": categoryId,
+      };
 }
 
 class Photo {
+  Photo({
+    required this.type,
+    required this.data,
+  });
+
   late final String type;
   late final Uint8List data;
 
-  Photo({required this.type, required this.data});
-
   Photo.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
-    data = Uint8List.fromList(json['data'].cast<int>());
+    type = json["type"];
+    data = Uint8List.fromList(
+      (json["data"].cast<int>()),
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
-    data['type'] = type;
-    data['data'] = this.data;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "type": type,
+        "data": List<dynamic>.from(data.map((x) => x)),
+      };
 }

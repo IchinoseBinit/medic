@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:medic/providers/order_provider.dart';
 import 'package:medic/providers/products_provider.dart';
 import 'package:medic/utils/show_snack_bar.dart';
 import 'package:medic/widgets/curved_body_widget.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medic/widgets/general_alert_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -110,11 +112,15 @@ class ProductScreen extends StatelessWidget {
               height: 16.h,
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (product.selectedQuantity == 0) {
                   showSnackBar(context, "Please select your quantity");
                 } else {
                   ScaffoldMessenger.of(context).clearSnackBars();
+                  GeneralAlertDialog().customLoadingDialog(context);
+                  await Provider.of<OrderProvider>(context, listen: false)
+                      .postOrder(context, productId: product.id);
+                  Navigator.pop(context);
                 }
               },
               child: const Text("Buy"),

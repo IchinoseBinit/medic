@@ -6,6 +6,7 @@ const _users = "$_baseUrl/users";
 
 const registerUrl = _users;
 const loginUrl = "$_users/login_user";
+const profileUrl = "$_users/profile";
 
 const medicalStaffUrl = "$_baseUrl/medical-staff";
 
@@ -16,4 +17,6 @@ const educationUrl = "$_baseUrl/education";
 const productsUrl = "$_baseUrl/product";
 const latestProductsUrl = "$productsUrl/products";
 const singleProductUrl = "$_baseUrl/product?id=";
+
+const orderUrl = "$_baseUrl/order";
 // medical-staff  

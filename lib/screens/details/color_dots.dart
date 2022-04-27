@@ -12,7 +12,7 @@ class ColorDots extends StatelessWidget {
     required this.decrementChange,
   }) : super(key: key);
 
-  final Products product;
+  final Product product;
   final int quantity;
   final Function incrementChange;
   final Function decrementChange;

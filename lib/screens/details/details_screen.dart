@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:medic/models/products.dart';
+import 'package:medic/providers/order_provider.dart';
 import 'package:medic/providers/products_provider.dart';
 import 'package:medic/screens/details/color_dots.dart';
 import 'package:medic/utils/scroll_configuration.dart';
+import 'package:medic/widgets/general_alert_dialog.dart';
 import 'package:provider/provider.dart';
 import '/screens/details/product_description.dart';
 import '/screens/details/product_images.dart';
@@ -13,7 +15,7 @@ import 'custom_app_bar.dart';
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({Key? key, required this.product})
       : super(key: key);
-  final Products product;
+  final Product product;
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -54,35 +56,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           // child: CustomAppBar(rating: widget.product.product.),
           child: const CustomAppBar(),
         ),
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.w,
-            vertical: 8.h,
-          ),
-          child: ElevatedButton(
-            onPressed: () {
-              // Provider.of<CartProvider>(context, listen: false).addToCart(
-              //   widget.product.product,
-              //   quantity,
-              // );
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   const SnackBar(
-              //     content: Text(
-              //       "Successfully added to the cart",
-              //       textAlign: TextAlign.center,
-              //     ),
-              //     duration: Duration(
-              //       seconds: 3,
-              //     ),
-              //   ),
-              // );
-            },
-            child: const Text("Buy"),
-            style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).primaryColor,
-            ),
-          ),
-        ),
         body: ScrollConfiguration(
           behavior: MyBehavior(),
           child: SingleChildScrollView(
@@ -111,6 +84,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         );
                       }),
+                      TopRoundedContainer(
+                          color: Colors.white,
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  GeneralAlertDialog()
+                                      .customLoadingDialog(context);
+                                  await Provider.of<OrderProvider>(context,
+                                          listen: false)
+                                      .postOrder(
+                                    context,
+                                    productId: widget.product.id,
+                                  );
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Buy"),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 16.h,
+                              ),
+                            ],
+                          ))
                     ],
                   ),
                 ),
@@ -124,7 +123,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 }
 
 class ProductDetailsArguments {
-  final Products product;
+  final Product product;
 
   ProductDetailsArguments({required this.product});
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:medic/providers/login_provider.dart';
 import 'package:medic/providers/products_provider.dart';
 import 'package:medic/screens/list_of_medicines.dart';
 import 'package:medic/screens/surgical_items.dart';
@@ -9,47 +10,20 @@ import 'package:medic/widgets/product_card.dart';
 import 'package:provider/provider.dart';
 import '/utils/navigate.dart';
 import '/widgets/curved_body_widget.dart';
-import '/widgets/general_alert_dialog.dart';
-import '/widgets/general_bottom_sheet.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final data = null;
-    final future = Provider.of<ProductsProvider>(context, listen: false)
-        .fetchLatestProducts();
+    final data = Provider.of<LoginProvider>(context, listen: false).profile;
+    final future =
+        Provider.of<ProductsProvider>(context, listen: false).fetchProducts();
     // final future =
     //     Provider.of<RoomProvider>(context, listen: false).fetchRoom(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome Home!"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              // final roomName =
-              //     await GeneralBottomSheet().customBottomSheet(context);
-              // // print(roomName);
-              // if (roomName != null) {
-              //   try {
-              //     GeneralAlertDialog().customLoadingDialog(context);
-              //     await Provider.of<RoomProvider>(context, listen: false)
-              //         .addRoom(context, roomName);
-              //     Navigator.pop(context);
-              //     Navigator.pop(context);
-              //   } catch (ex) {
-              //     Navigator.pop(context);
-              //     GeneralAlertDialog()
-              //         .customAlertDialog(context, ex.toString());
-              //   }
-              // }
-            },
-            icon: const Icon(
-              Icons.add_outlined,
-            ),
-          )
-        ],
       ),
       drawer: Drawer(
           child: Column(
@@ -58,28 +32,9 @@ class HomeScreen extends StatelessWidget {
           //   // data.
           //   return
           UserAccountsDrawerHeader(
-            accountName: Text(data?.user?.name ?? "No Name"),
+            accountName: Text(data?.username ?? "No Name"),
             accountEmail: Text(
-              data?.user?.email ?? "No Email",
-            ),
-            currentAccountPicture: Hero(
-              tag: "image-url",
-              child: SizedBox(
-                height: 128.h,
-                width: 128.h,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(64.r),
-                  child: data?.user?.image == null
-                      ? Image.network(
-                          "image",
-                          fit: BoxFit.cover,
-                        )
-                      : Image.memory(
-                          base64Decode(data.user.image!),
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
+              data?.email ?? "No Email",
             ),
           ),
 
@@ -106,88 +61,50 @@ class HomeScreen extends StatelessWidget {
         ],
       )),
       body: CurvedBodyWidget(
-          widget: SingleChildScrollView(
-        child: SingleChildScrollView(
-          child: FutureBuilder(
-              future: future,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+        widget: FutureBuilder(
+          future: future,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            final list = Provider.of<ProductsProvider>(context, listen: false)
+                .listOfProducts;
+            return list.isEmpty
+                ? const Center(
+                    child: Text("No products"),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Latest products",
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => ProductCard(
+                            product: list[index],
+                          ),
+                          separatorBuilder: (context, index) => const SizedBox(
+                            width: 10,
+                          ),
+                          itemCount: list.length,
+                          shrinkWrap: true,
+                          primary: false,
+                        ),
+                      ),
+                    ],
                   );
-                }
-                final list =
-                    Provider.of<ProductsProvider>(context, listen: false)
-                        .listOfProducts;
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: ((context, index) => ProductCard(
-                        product: list[index],
-                      )),
-                  itemCount: list.length,
-                  shrinkWrap: true,
-                  primary: false,
-                );
-              }),
+          },
         ),
-      )
-          // FutureBuilder(
-          //     future: future,
-          //     builder: (context, snapshot) {
-          //       if (snapshot.connectionState == ConnectionState.waiting) {
-          //         return const Center(
-          //           child: CircularProgressIndicator(),
-          //         );
-          //       }
-          //       final listOfRoom = Provider.of<RoomProvider>(
-          //         context,
-          //       ).listOfRoom;
-          //       return listOfRoom.isEmpty
-          //           ? const Center(
-          //               child: Text("You do not have any rooms!"),
-          //             )
-          //           : SingleChildScrollView(
-          //               child: Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   Text(
-          //                     "Your Rooms",
-          //                     style: Theme.of(context).textTheme.headline6,
-          //                   ),
-          //                   SizedBox(
-          //                     height: SizeConfig.height,
-          //                   ),
-          //                   GridView.builder(
-          //                     itemCount: listOfRoom.length,
-          //                     gridDelegate:
-          //                         SliverGridDelegateWithFixedCrossAxisCount(
-          //                       crossAxisCount: 3,
-          //                       childAspectRatio: 2,
-          //                       mainAxisSpacing: SizeConfig.height,
-          //                       crossAxisSpacing: SizeConfig.width * 4,
-          //                     ),
-          //                     itemBuilder: (context, index) {
-          //                       return InkWell(
-          //                         onTap: () => navigate(context,
-          //                             RoomScreen(room: listOfRoom[index])),
-          //                         child: Card(
-          //                           color: Colors.red.shade200,
-          //                           child: Center(
-          //                             child: Text(
-          //                               listOfRoom[index].name,
-          //                             ),
-          //                           ),
-          //                         ),
-          //                       );
-          //                     },
-          //                     shrinkWrap: true,
-          //                   )
-          //                 ],
-          //               ),
-          //             );
-          //     }),
-
-          ),
+      ),
     );
   }
 
