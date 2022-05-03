@@ -4,6 +4,7 @@ import 'package:medic/providers/order_provider.dart';
 import 'package:medic/providers/products_provider.dart';
 import 'package:medic/screens/details/color_dots.dart';
 import 'package:medic/utils/scroll_configuration.dart';
+import 'package:medic/utils/show_snack_bar.dart';
 import 'package:medic/widgets/general_alert_dialog.dart';
 import 'package:provider/provider.dart';
 import '/screens/details/product_description.dart';
@@ -25,7 +26,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   incrementValueChanged() {
     final product = Provider.of<ProductsProvider>(context, listen: false)
         .getProductById(widget.product.id);
-    if (product.selectedQuantity < widget.product.quantity) {
+    if (product!.selectedQuantity < widget.product.quantity) {
       Provider.of<ProductsProvider>(context, listen: false)
           .updateQuantity(widget.product.id, product.selectedQuantity + 1);
     }
@@ -34,7 +35,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   decrementValueChanged() {
     final product = Provider.of<ProductsProvider>(context, listen: false)
         .getProductById(widget.product.id);
-    if (product.selectedQuantity > 0) {
+    if (product!.selectedQuantity > 0) {
       Provider.of<ProductsProvider>(context, listen: false)
           .updateQuantity(widget.product.id, product.selectedQuantity - 1);
     }
@@ -77,7 +78,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           child: ColorDots(
                             product: widget.product,
                             quantity: val
-                                .getProductById(widget.product.id)
+                                .getProductById(widget.product.id)!
                                 .selectedQuantity,
                             incrementChange: incrementValueChanged,
                             decrementChange: decrementValueChanged,
@@ -90,15 +91,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             children: [
                               ElevatedButton(
                                 onPressed: () async {
-                                  GeneralAlertDialog()
-                                      .customLoadingDialog(context);
-                                  await Provider.of<OrderProvider>(context,
-                                          listen: false)
-                                      .postOrder(
-                                    context,
-                                    productId: widget.product.id,
-                                  );
-                                  Navigator.pop(context);
+                                  try {
+                                    GeneralAlertDialog()
+                                        .customLoadingDialog(context);
+                                    await Provider.of<OrderProvider>(context,
+                                            listen: false)
+                                        .postOrder(
+                                      context,
+                                      productId: widget.product.id,
+                                    );
+                                    Navigator.pop(context);
+                                    showSnackBar(
+                                        context, "Successfully Ordered",
+                                        color: Colors.black);
+                                  } catch (ex) {
+                                    Navigator.pop(context);
+                                    GeneralAlertDialog().customAlertDialog(
+                                        context, ex.toString());
+                                  }
                                 },
                                 child: const Text("Buy"),
                                 style: ElevatedButton.styleFrom(

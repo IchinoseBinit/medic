@@ -40,7 +40,7 @@ class MedicalStaff {
         phoneNumber: json["phoneNumber"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
-        medicalStaffCategoryId: json["MedicalStaffCategoryId"],
+        medicalStaffCategoryId: json["MedicalStaffCategoryId"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

@@ -30,11 +30,6 @@ class RegisterScreen extends StatelessWidget {
           key: formKey,
           child: Column(
             children: [
-              // Image.asset(
-              //   ImageConstants.logo,
-              //   width: SizeConfig.width * 40,
-              //   height: SizeConfig.height * 25,
-              // ),
               SizedBox(
                 height: 8.h,
               ),

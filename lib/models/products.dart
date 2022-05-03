@@ -46,7 +46,7 @@ class Product {
     selectedQuantity = 1;
     createdAt = DateTime.parse(json["createdAt"]);
     updatedAt = DateTime.parse(json["updatedAt"]);
-    categoryId = json["CategoryId"];
+    categoryId = json["CategoryId"] ?? 0;
   }
 
   Map<String, dynamic> toJson() => {

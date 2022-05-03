@@ -8,6 +8,8 @@ const registerUrl = _users;
 const loginUrl = "$_users/login_user";
 const profileUrl = "$_users/profile";
 
+const customerUrl = "$_baseUrl/customer";
+
 const medicalStaffUrl = "$_baseUrl/medical-staff";
 
 const companyUrl = "$_baseUrl/company";

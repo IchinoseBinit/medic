@@ -17,10 +17,25 @@ class LoginProvider extends ChangeNotifier {
 
       // APIClient.token = await APICall().postRequestWithoutToken(loginUrl, map);
       final res = await APICall().postRequestWithoutToken(loginUrl, map);
+      print(res);
       profile = profileFromJson(res);
       APIClient.token = profile!.token;
 
       notifyListeners();
+    } catch (ex) {
+      rethrow;
+    }
+  }
+
+  updateCustomer() async {
+    try {
+      final map = {
+        "fullName": "Bini",
+        "address": "Dharan",
+        "UserId": profile!.id,
+      };
+      final res = await APICall().postRequestWithToken(customerUrl, map);
+      print(res);
     } catch (ex) {
       rethrow;
     }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:medic/constants/image_constant.dart';
 import 'package:medic/providers/medical_staff_provider.dart';
 import 'package:medic/widgets/shadowed_container.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '/widgets/curved_body_widget.dart';
 
 class ListOfStaffs extends StatelessWidget {
@@ -12,77 +11,61 @@ class ListOfStaffs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final future = Provider.of<MedicalStaffProvider>(context, listen: false)
-        .fetchlistOfStaff();
+    final list =
+        Provider.of<MedicalStaffProvider>(context, listen: false).listOfStaff;
     return Scaffold(
       appBar: AppBar(
         title: const Text("List of Staffs"),
       ),
       body: CurvedBodyWidget(
         widget: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              FutureBuilder(
-                  future: future,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    final list = Provider.of<MedicalStaffProvider>(context,
-                            listen: false)
-                        .listOfStaff;
-                    return list.isEmpty
-                        ? const Center(
-                            child: Text("No staffs found"),
-                          )
-                        : ListView.builder(
-                            itemBuilder: ((context, index) => ShadowedContainer(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      buildCallEmailRow(
-                                        context,
-                                        Icons.person_outlined,
-                                        list[index].fullName,
-                                        isHeading: true,
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      buildCallEmailRow(
-                                        context,
-                                        Icons.work_outline,
-                                        list[index].post,
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      buildCallEmailRow(
-                                        context,
-                                        Icons.call_outlined,
-                                        list[index].phoneNumber,
-                                        isPhone: true,
-                                      ),
-                                    ],
-                                  ),
-                                  pad: 16,
-                                  marginH: 16 / 3,
-                                )),
-                            // ListTile(
-                            //       title: Text(list[index].fullName),
-                            //     )),
-                            itemCount: list.length,
-                            shrinkWrap: true,
-                            primary: false,
-                          );
-                  }),
-            ],
-          ),
+          child: list.isEmpty
+              ? const Center(
+                  child: Text("No staffs found"),
+                )
+              : ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(
+                    height: 16,
+                  ),
+                  itemBuilder: ((context, index) => ShadowedContainer(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildCallEmailRow(
+                              context,
+                              Icons.person_outlined,
+                              list[index].fullName,
+                              isHeading: true,
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            buildCallEmailRow(
+                              context,
+                              Icons.work_outline,
+                              list[index].post,
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            buildCallEmailRow(
+                              context,
+                              Icons.call_outlined,
+                              list[index].phoneNumber,
+                              isPhone: true,
+                            ),
+                          ],
+                        ),
+                        pad: 16,
+                        marginH: 0,
+                      )),
+                  // ListTile(
+                  //       title: Text(list[index].fullName),
+                  //     )),
+                  itemCount: list.length,
+                  shrinkWrap: true,
+                  primary: false,
+                ),
         ),
       ),
     );
