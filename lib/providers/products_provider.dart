@@ -24,7 +24,7 @@ class ProductsProvider extends ChangeNotifier {
     }
   }
 
-  Future<Product> fetchProductById(String id) async {
+  Future<Product> fetchProductById(int id) async {
     try {
       final response = await APICall().getRequestWithToken("$productsUrl/$id");
       return Product.fromJson(jsonDecode(response));

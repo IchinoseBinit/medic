@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:medic/api/api_call.dart';
 import 'package:medic/constants/urls.dart';
 import 'package:medic/models/order.dart';
-import 'package:medic/models/products.dart';
 import 'package:medic/providers/login_provider.dart';
 import 'package:medic/providers/products_provider.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +17,10 @@ class OrderProvider extends ChangeNotifier {
       final id = Provider.of<LoginProvider>(context, listen: false).profile!.id;
       final response = await APICall().getRequestWithToken("$orderUrl/$id");
       final list = jsonDecode(response);
+
       listOfOrders.clear();
       for (var item in list) {
-        final productId = item["ProductId"];
+        final productId = item["ProductId"] as int;
         var product = Provider.of<ProductsProvider>(context, listen: false)
             .getProductById(id);
 

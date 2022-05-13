@@ -1,16 +1,10 @@
-import 'dart:convert';
-
-// import 'package:ecommerce/api/order_api.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 import 'package:medic/models/order.dart';
 import 'package:medic/providers/order_provider.dart';
 import 'package:medic/widgets/curved_body_widget.dart';
 import 'package:provider/provider.dart';
 
-import '/screens/order_details/order_details.dart';
 import '/screens/orders/history_card.dart';
-import 'package:flutter/material.dart';
-
 import '/utils/scroll_configuration.dart';
 
 class OrderScreen extends StatelessWidget {

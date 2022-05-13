@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:medic/providers/login_provider.dart';
+import 'package:medic/utils/navigate.dart';
 import 'package:provider/provider.dart';
 
 import '/constants/constants.dart';
@@ -105,12 +106,7 @@ class LoginScreen extends StatelessWidget {
       dialog.customLoadingDialog(context);
       await Provider.of<LoginProvider>(context, listen: false).loginUser(
           username: usernameController.text, password: passwordController.text);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const HomeScreen(),
-        ),
-      );
+      navigateAndRemoveAll(context, const HomeScreen());
     } catch (ex) {
       Navigator.pop(context);
       dialog.customAlertDialog(context, ex.toString());

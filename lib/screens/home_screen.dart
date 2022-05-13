@@ -4,6 +4,7 @@ import 'package:medic/providers/login_provider.dart';
 import 'package:medic/providers/medical_staff_provider.dart';
 import 'package:medic/providers/products_provider.dart';
 import 'package:medic/screens/list_of_staff_screen.dart';
+import 'package:medic/screens/login_screen.dart';
 import 'package:medic/screens/orders/order_screen.dart';
 import 'package:medic/screens/surgical_items.dart';
 import 'package:medic/screens/update_customer_screen.dart';
@@ -33,54 +34,63 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Welcome Home!"),
       ),
       drawer: Drawer(
-          child: Column(
-        children: [
-          // Consumer<UserProvider>(builder: (_, data, __) {
-          //   // data.
-          //   return
-          UserAccountsDrawerHeader(
-            accountName: Text(data?.username ?? "No Name"),
-            accountEmail: Text(
-              data?.email ?? "No Email",
+        child: Column(
+          children: [
+            // Consumer<UserProvider>(builder: (_, data, __) {
+            //   // data.
+            //   return
+            UserAccountsDrawerHeader(
+              accountName: Text(data?.username ?? "No Name"),
+              accountEmail: Text(
+                data?.email ?? "No Email",
+              ),
             ),
-          ),
 
-          buildListTile(
-            context,
-            label: "Update Profile",
-            widget: UpdateCustomerScreen(),
-          ),
-          SizedBox(
-            height: 8.h,
-          ),
-          buildListTile(
-            context,
-            label: "Your Orders",
-            widget: const OrderScreen(),
-          ),
-          SizedBox(
-            height: 8.h,
-          ),
-          buildListTile(
-            context,
-            label: "Items",
-            widget: SurgicalItems(
-              title: "Items",
+            buildListTile(
+              context,
+              label: "Update Profile",
+              widget: UpdateCustomerScreen(),
             ),
-          ),
-          SizedBox(
-            height: 8.h,
-          ),
-          buildListTile(
-            context,
-            label: "Staffs",
-            widget: const ListOfStaffs(),
-          ),
-          SizedBox(
-            height: 8.h,
-          ),
-        ],
-      )),
+            SizedBox(
+              height: 8.h,
+            ),
+            buildListTile(
+              context,
+              label: "Your Orders",
+              widget: const OrderScreen(),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            buildListTile(
+              context,
+              label: "Items",
+              widget: SurgicalItems(
+                title: "Items",
+              ),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+            buildListTile(
+              context,
+              label: "Staffs",
+              widget: const ListOfStaffs(),
+            ),
+            const Spacer(),
+            ListTile(
+              title: const Text("Log out"),
+              trailing: const Icon(
+                Icons.arrow_right_outlined,
+              ),
+              onTap: () => navigateAndRemoveAll(context, LoginScreen()),
+            ),
+            SizedBox(
+              height: 8.h,
+            ),
+          ],
+        ),
+      ),
       body: CurvedBodyWidget(
         widget: FutureBuilder(
           future: future,

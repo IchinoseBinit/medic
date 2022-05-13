@@ -49,6 +49,7 @@ class SurgicalItems extends StatelessWidget {
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 120.h,
+                          crossAxisSpacing: 5.w,
                           childAspectRatio: .5,
                         ),
                         itemBuilder: ((context, index) => ProductCard(
